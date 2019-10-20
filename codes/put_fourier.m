@@ -21,7 +21,7 @@ VPut_k = @(k) ( 2*K/(b-a) * (-ksi_k(k) + psi_k(k)) );
 phiLevy = @(w) ( exp(1i*r*T*w - 0.5*sigma^2*T*w.^2) ); 
 
 S = 80:0.1:120; % Stock-price
-x = log(S'/K); % Log-To-Maturity-price = log(S/K)
+x = log(S'/K); % Log-price = log(S/K)
 
 vPut = 0.5 * real(phiLevy(0) * exp(zeros(length(S),1)));
 for k=1:1:N-1
