@@ -2,6 +2,8 @@
 % using the Fourier Cosine Expansion method. 
 % ---------------------------------------------------
 
+alpha = -1; % Price European Call or Put 
+           % 1 for Put, -1 for Call
 N = 2^6; % Truncation of Fourier series
 K = 100; % Strike Price
 r = 0.1; % Interest rate
@@ -20,31 +22,34 @@ VPut_k = @(k) ( 2*K/(b-a) * (-ksi_k(k) + psi_k(k)) );
 
 phiLevy = @(w) ( exp(1i*r*T*w - 0.5*sigma^2*T*w.^2) ); 
 
-S = 80:0.1:120; % Stock-price
+S = 80:1:120; % Stock-price
 x = log(S'/K); % Log-price = log(S/K)
 
-vPut = 0.5 * real(phiLevy(0) * exp(zeros(length(S),1)));
+Pt = 0.5 * real(phiLevy(0) * exp(zeros(length(S),1)));
 for k=1:1:N-1
-   vPut = vPut + ...
+   Pt = Pt + ...
        real(phiLevy(k*pi/(b-a)) * exp(1i*k*pi*(x-a)/(b-a)))*VPut_k(k);  
 end
-vPut = vPut * exp(-r*T); 
+Pt = Pt * exp(-r*T); 
 
 % Exact Black-Scholes solution of Put
-vPut_Exact = putExact_BS(K,r,sigma,S,0,T)';
+Pt_Exact = putExact_BS(K,r,sigma,S,0,T)';
 % Payoff of Put
-PutPayoff = @(S) ( alpha*max(K-S, 0) );
+Payoff = @(S) ( max(alpha*(K-S), 0) );
 
 if alpha==1 % Pricing Put
-    plot(S, vPut_Exact, 'DisplayName', 'Exact V_t'); hold on;
-    plot(S, PutPayoff(S), 'DisplayName', 'Payoff'); hold on; 
-    plot(S, vPut, 'DisplayName', 'V_t^{Fourier}');
+    plot(S, Pt_Exact, 'DisplayName', 'Exact P_t'); hold on;
+    plot(S, Payoff(S), 'DisplayName', 'Payoff'); hold on; 
+    plot(S, Pt, 'DisplayName', 'P_t^{Fourier}');
+    xlabel('S_0'); ylabel('P_0'); title('European Put Option');
     legend; 
 elseif alpha ==-1 % Pricing Call using Put-Call Parity
-    
-    
-    
-    
-    
+    Ct = Pt + S' - K*exp(-r*T); 
+    Ct_Exact = Pt_Exact + S' - K*exp(-r*T); 
+    plot(S, Ct_Exact, 'DisplayName', 'Exact C_t'); hold on;
+    plot(S, Payoff(S), 'DisplayName', 'Payoff'); hold on; 
+    plot(S, Ct , 'DisplayName', 'C_t^{Fourier}');
+    xlabel('S_0'); ylabel('C_0'); title('European Call Option');
+    legend;
 end
     
