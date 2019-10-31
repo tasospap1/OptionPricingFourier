@@ -1,4 +1,4 @@
-% Pricing a put/call option under the Black-Scholes model 
+% Pricing a put/call options under the Black-Scholes model 
 % using the Fourier Cosine Expansion method. 
 % ---------------------------------------------------
 clear all; 
@@ -9,7 +9,7 @@ alpha = -1; % Price European Call or Put
 N = 2^6; % Truncation of Fourier series
 K = 100; % Strike Price
 r = 0.01; % Interest rate
-T = 0.1; % Maturity
+T = 1; % Maturity
 sigma = 0.25; % Volatility 
 
 c1 = r*T; c2 = sigma^2*T; c4 = 0; L = 10; % Truncated domain [a,b]
@@ -22,7 +22,7 @@ psi_k = @(k) (((b-a)/k/pi * sin(-k*pi*a/(b-a))).*(k>0) );
                     
 VPut_k = @(k) ( 2*K/(b-a) * (-ksi_k(k) + psi_k(k)) ); 
 
-phiLevy = @(w) ( exp(1i*r*T*w - 0.5*sigma^2*T*w.^2) ); 
+phiLevy = @(w) ( exp(1i*(r-sigma^2/2)*T*w - 0.5*sigma^2*T*w.^2) ); 
 
 S = 80:1:120; % Stock-price
 x = log(S'/K); % Log-price = log(S/K)
@@ -36,8 +36,7 @@ end
 Pt = Pt * exp(-r*T) ; 
 
 % Exact Black-Scholes solution of Put
-[Call,Put] = blsprice(S,K,r,T,sigma);
-Pt_Exact = Put'; 
+Pt_Exact = putExact_BS(K,r,sigma,S,0,T)';
 
 % Payoff of Put
 Payoff = @(S) ( max(alpha*(K-S), 0) );
