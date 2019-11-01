@@ -4,7 +4,7 @@
 clear all; 
 alpha = 1; % Price European Call or Put 
            % 1 for Put, -1 for Call
-N = 2^6; % Truncation of Fourier series
+N = 2^8; % Truncation of Fourier series
 K = 100; % Strike Price
 mu = 0.01; % Interest rate
 T = 1; % Maturity
@@ -40,7 +40,7 @@ phiHes = @(w) ( exp(1i*w*mu*T + u0/eta^2 *((1-exp(-D(w)*T))/(1-G(w) ...
                 exp(lambda*u_bar/eta^2*(T*(lambda-1i*rho*eta*w-D(w))- ...
                     2*log((1-G(w)*exp(-D(w)*T))/(1-G(w))))) ); 
 
-S = 70:1:150; % Stock-price
+S = 80:1:120; % Stock-price
 x = log(S'/K); % Log-price = log(S/K)
 
 Pt = 1/2 * real(phiHes(0) .* exp(zeros(length(S),1))) ...
@@ -51,12 +51,19 @@ for k=1:N-1
 end
 Pt = Pt * exp(-mu*T) ; 
 
+% Exact Heston solution of Put
+Settle = datenum('05-Jun-2005');
+Maturity = datemnth(Settle, 12);
+Pt_Exact = optByHestonNI(mu,S,Settle,Maturity,'Put',K,u0,u_bar,lambda,eta,rho)';
+
 % Payoff of Put
 Payoff = @(S) ( max(alpha*(K-S), 0) );
 
 if alpha==1 % Pricing Put
+    plot(S, Pt_Exact, 'DisplayName', 'Exact P_0'); hold on;
     plot(S, Payoff(S), 'DisplayName', 'Payoff'); hold on; 
     plot(S, Pt, 'DisplayName', 'P_0^{Fourier}');
+    %plot(S, abs(Pt - Pt_Exact')); 
     xlabel('S_0'); ylabel('P_0'); title('European Put Option');
     legend; 
 elseif alpha ==-1 % Pricing Call using Put-Call Parity

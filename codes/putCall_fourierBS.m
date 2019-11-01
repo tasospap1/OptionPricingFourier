@@ -3,7 +3,7 @@
 % ---------------------------------------------------
 clear all; 
 
-alpha = -1; % Price European Call or Put 
+alpha = 1; % Price European Call or Put 
            % 1 for Put, -1 for Call
            
 N = 2^6; % Truncation of Fourier series
