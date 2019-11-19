@@ -2,9 +2,9 @@
 % using the Fourier Cosine Expansion method. 
 % ---------------------------------------------------
 clear all; 
-alpha = 1; % Price European Call or Put 
+alpha = -1; % Price European Call or Put 
            % 1 for Put, -1 for Call
-N = 2^6; % Truncation of Fourier series
+N = 2^12; % Truncation of Fourier series
 K = 100; % Strike Price
 mu = 0.01; % Interest rate
 T = 1; % Maturity
@@ -78,7 +78,7 @@ if alpha==1 % Pricing Put
     plot(S, Gamma, 'DisplayName', '\Gamma');
     xlabel('S_0'); ylabel('\Gamma'); legend; 
 elseif alpha ==-1 % Pricing Call using Put-Call Parity
-    Ct = Pt + S' - K*exp(-r*T); 
+    Ct = Pt + S' - K*exp(-mu*T); 
     plot(S, Payoff(S), 'DisplayName', 'Payoff'); hold on; 
     plot(S, Ct , 'DisplayName', 'C_0^{Fourier}');
     xlabel('S_0'); ylabel('C_0'); title('European Call Option');
