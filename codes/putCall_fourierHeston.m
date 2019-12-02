@@ -2,7 +2,7 @@
 % using the Fourier Cosine Expansion method. 
 % ---------------------------------------------------
 clear all; 
-alpha = -1; % Price European Call or Put 
+alpha = 1; % Price European Call or Put 
            % 1 for Put, -1 for Call
 N = 2^12; % Truncation of Fourier series
 K = 100; % Strike Price

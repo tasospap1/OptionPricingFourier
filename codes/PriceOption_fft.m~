@@ -1,5 +1,6 @@
-function Price = PriceOption_fft(K,S,kappa,sigma,theta,u0,rho,mu,T,PutOrCall)
+function Price = PriceOption_fft(K,S,kappa,sigma,theta,u0,rho,mu,TPutOrCall)
 
+clear all; 
 %PUTorCALL = -1; % Price European Call (-1) or Put (1) 
 N = 2^12; % Truncation of Fourier series
 alpha = 1.25; % or 1.5
