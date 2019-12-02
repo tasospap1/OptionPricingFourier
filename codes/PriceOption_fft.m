@@ -1,10 +1,9 @@
-function Ct = PriceOption_fft(K,S,kappa,sigma,theta,u0,rho,mu,T,PUTorCALL, alpha)
+function Price = PriceOption_fft(K,S,kappa,sigma,theta,u0,rho,mu,T, alpha, PutOrCall)
 
 clear all; 
 %PUTorCALL = -1; % Price European Call (-1) or Put (1) 
 N = 2^12; % Truncation of Fourier series
 %alpha = 1.25; % or 1.5
-
 
 upperlimit = 500;
 eta = upperlimit/N;
@@ -52,7 +51,11 @@ for j = 1 : size(x0,2)
     C_values = exp(-log(K)*alpha)*payoff/pi;
     Ct(j) = C_values(index);
 end
-if PUTorCALL == 1
-    Ct = Ct - S + K*exp(-mu*T);
+
+if PutOrCall == -1
+    Price = Ct; 
+elseif PutOrCall == 1
+    Price = Ct - S + K*exp(-mu*T);
 end
+
 end
