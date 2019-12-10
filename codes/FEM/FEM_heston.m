@@ -1,7 +1,7 @@
 %  MAIN_HESTONCALL computes European call wit the Heston model using finite 
 %          elements
 %
-function C = FEM_heston(Nx,Ny,T,K,kappa,mt,beta,rho,vol)
+function [C ,S]= FEM_heston(Nx,Ny,T,K,kappa,mt,beta,rho,vol)
 %clear all;
 %close all;
 
@@ -117,7 +117,7 @@ u0 = u0(idyd:idyu,idxd:idxu);
 [m,idx] = min(abs(y - vol))
 %C = u
 C = u(idx,:);
-S
+S;
 
 %figure(1)
 %surf(X,Y,u), 

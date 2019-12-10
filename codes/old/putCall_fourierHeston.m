@@ -64,23 +64,23 @@ Pt_Exact = optByHestonNI(mu,S,Settle,Maturity,'Put',K,u0,u_bar,lambda,eta,rho)';
 
 % Payoff of Put
 Payoff = @(S) ( max(alpha*(K-S), 0) );
-
+set(groot,'defaultLegendInterpreter','latex');
 if alpha==1 % Pricing Put
     figure(1); %
-    plot(S, Pt_Exact, 'DisplayName', 'Exact P_0'); hold on;
+    plot(S, Pt_Exact, 'DisplayName', 'Exact $P_0$'); hold on;
     plot(S, Payoff(S), 'DisplayName', 'Payoff'); hold on; 
-    plot(S, Pt, 'DisplayName', 'P_0^{Fourier}');
+    plot(S, Pt, 'DisplayName', '$P_0^{Fourier}$');
     xlabel('S_0'); ylabel('P_0'); title('European Put Option'); legend; 
     figure(2); %
-    plot(S, Delta, 'DisplayName', '\Delta');
+    plot(S, Delta, 'DisplayName', '$\Delta$');
     xlabel('S_0'); ylabel('\Delta'); legend; 
     figure(3); %
-    plot(S, Gamma, 'DisplayName', '\Gamma');
+    plot(S, Gamma, 'DisplayName', '$\Gamma$');
     xlabel('S_0'); ylabel('\Gamma'); legend; 
 elseif alpha ==-1 % Pricing Call using Put-Call Parity
     Ct = Pt + S' - K*exp(-mu*T); 
     plot(S, Payoff(S), 'DisplayName', 'Payoff'); hold on; 
-    plot(S, Ct , 'DisplayName', 'C_0^{Fourier}');
+    plot(S, Ct , 'DisplayName', '$C_0^{Fourier}$');
     xlabel('S_0'); ylabel('C_0'); title('European Call Option');
     legend;
 end

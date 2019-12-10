@@ -1,5 +1,0 @@
-function [outputArg1,outputArg2] = PriceOption_Heston_COS(mu, sigma,...
-           K, T, S, PutOrCall, lambda, eta, u_);
-
-end
-
